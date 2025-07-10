@@ -4,6 +4,7 @@
   "package": "net.jmeow.attack_alert.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "PlayerEntityMixin"
   ],
   "client": [
   ],

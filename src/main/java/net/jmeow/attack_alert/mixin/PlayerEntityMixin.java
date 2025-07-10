@@ -22,10 +22,13 @@ public abstract class PlayerEntityMixin {
     private void tick(CallbackInfo info) {
         //noinspection ConstantValue
         if(!this.getGameProfile().equals(MinecraftClient.getInstance().getGameProfile())
-                && this.selectedItem.getItem().getTranslationKey().endsWith("_sword")
                 && ((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 20.0)) {
-            System.out.println(this.getGameProfile().getName() + " nearby, holding sword");
-            MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding sword"), true);
+            if(this.selectedItem.getItem().getTranslationKey().endsWith("_sword")) {
+                MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding sword"), true);
+            }
+            if(this.selectedItem.getItem().getTranslationKey().endsWith("_axe")) {
+                MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding axe"), true);
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ public abstract class PlayerEntityMixin {
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void init(CallbackInfo info) {
         if(!this.getGameProfile().equals(MinecraftClient.getInstance().getGameProfile()) && this.selectedItem.getItem().getTranslationKey().endsWith("_sword")) {
-            System.out.println("Player nearby, holding sword");
+            System.out.println(this.getGameProfile().getName() + " nearby, holding sword");
         }
     }
 }

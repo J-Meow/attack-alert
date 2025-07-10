@@ -21,13 +21,19 @@ public abstract class PlayerEntityMixin {
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void tick(CallbackInfo info) {
         //noinspection ConstantValue
-        if(!this.getGameProfile().equals(MinecraftClient.getInstance().getGameProfile())
-                && ((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 20.0)) {
-            if(this.selectedItem.getItem().getTranslationKey().endsWith("_sword")) {
-                MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding sword"), true);
+        if(!this.getGameProfile().equals(MinecraftClient.getInstance().getGameProfile())) {
+            if(((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 20.0)) {
+                if (this.selectedItem.getItem().getTranslationKey().endsWith("_sword")) {
+                    MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding sword"), true);
+                }
+                if (this.selectedItem.getItem().getTranslationKey().endsWith("_axe")) {
+                    MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding axe"), true);
+                }
             }
-            if(this.selectedItem.getItem().getTranslationKey().endsWith("_axe")) {
-                MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding axe"), true);
+            if(((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 60.0)) {
+                if (this.selectedItem.getItem().getTranslationKey().endsWith("bow")) {
+                    MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " <60 blocks away, holding bow"), true);
+                }
             }
         }
     }

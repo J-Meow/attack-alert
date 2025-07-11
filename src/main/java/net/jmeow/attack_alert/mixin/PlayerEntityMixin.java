@@ -1,6 +1,7 @@
 package net.jmeow.attack_alert.mixin;
 
 import com.mojang.authlib.GameProfile;
+import net.jmeow.attack_alert.client.Attack_alertClient;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -20,21 +21,32 @@ public abstract class PlayerEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "tick()V")
     private void tick(CallbackInfo info) {
+        boolean isAttacker = false;
         //noinspection ConstantValue
         if(!this.getGameProfile().equals(MinecraftClient.getInstance().getGameProfile())) {
             if(((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 20.0)) {
                 if (this.selectedItem.getItem().getTranslationKey().endsWith("_sword")) {
+                    isAttacker = true;
                     MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding sword"), true);
                 }
                 if (this.selectedItem.getItem().getTranslationKey().endsWith("_axe")) {
+                    isAttacker = true;
                     MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " nearby, holding axe"), true);
                 }
             }
             if(((Entity)(Object)this).isInRange(MinecraftClient.getInstance().player, 60.0)) {
                 if (this.selectedItem.getItem().getTranslationKey().endsWith("bow")) {
+                    isAttacker = true;
                     MinecraftClient.getInstance().getMessageHandler().onGameMessage(Text.of(this.getGameProfile().getName() + " <60 blocks away, holding bow"), true);
                 }
             }
+        }
+        if(isAttacker) {
+            if(!Attack_alertClient.attackers.contains(this.getGameProfile())) {
+                Attack_alertClient.attackers.add(this.getGameProfile());
+            }
+        } else {
+            Attack_alertClient.attackers.remove(this.getGameProfile());
         }
     }
 }
